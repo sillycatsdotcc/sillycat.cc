@@ -160,6 +160,11 @@
 
         a {
             color: var(--text) !important;
+            text-decoration: none; /* No underline */
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
         }
     </style>
 </head>
@@ -189,7 +194,7 @@
 
     <script>
         let titleIndex = 0;
-        const titles = ['discord:', 'snippetschase'];
+        const titles = ['discord:', 'pinksnippets'];
 
         function toggleTitle() {
             document.title = titles[titleIndex];
@@ -220,7 +225,7 @@
             }
 
             setTimeout(function () {
-                textContent.textContent = 'sillycat.cc';
+                textContent.innerHTML = '<a href="index2.html" class="text">sillycat.cc</a>'; // Make text clickable
                 textContainer.classList.remove('hidden');
                 descriptionContent.classList.remove('hidden');
                 background.classList.remove('hidden');
@@ -244,7 +249,7 @@
         });
 
         // Typewriter effect for the description
-        const descriptionText = '- made by cleo ??';
+        const descriptionText = '- made by snips ??';
         let index = 0;
 
         function startTypewriterEffect() {
