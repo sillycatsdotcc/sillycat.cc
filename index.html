@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@</title>
+    <title>blameinvis</title>
     <link rel="icon" href="sources/wowow.png" type="image/png">
     <style>
         :root {
@@ -21,14 +19,14 @@
 
         body {
             margin: 0;
-            height: 100vh;
+            height: 100vh; /* Full viewport height */
             background-color: var(--background) !important;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: center; /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
             color: var(--text) !important;
             font-family: 'MagicNight', Arial, sans-serif;
-            overflow: hidden;
+            overflow: hidden; /* Prevent scrolling */
             position: relative;
         }
 
@@ -39,11 +37,9 @@
             cursor: pointer;
             text-shadow: 0 0 15px rgba(25, 25, 25, 1), 0 0 30px rgba(25, 25, 25, 0.4);
             display: block;
-            height: 100%;
             margin: 0;
         }
 
-        /* Other styles... */
         #pfp.hidden,
         #description-content.hidden,
         #wallpaper.hidden {
@@ -97,17 +93,16 @@
         }
 
         #image {
-            position: absolute;
-            top: 5000px;
-            left: 58%;
-            transform: translateX(-50%);
+            position: absolute; /* Set to absolute for positioning */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust for centering */
             width: 115px;
-            opacity: 0;
+            opacity: 0; /* Start hidden */
             transition: opacity 1s;
         }
 
         #image.show {
-            opacity: 1;
+            opacity: 0; /* Show when the class is added */
         }
 
         #text-container.show {
@@ -175,22 +170,22 @@
             <img id="pfp" class="hidden" src="./sources/image.png" alt="Profile Picture">
             <h1 id="text-content" class="text">click anywhere</h1>
         </div>
-        <p id="description-content" class="description"></p>
+        <p id="description-content" class="description hidden"></p>
     </div>
 
     <div id="wallholder" class="wallholder">
-        <video id="background" class="wallpaper" playsinline preload muted loop>
+        <video id="background" class="wallpaper hidden" playsinline="" preload="" muted="" loop="">
             <source src="./sources/ocean.mp4" type="video/mp4">
         </video>
     </div>
 
-    <img id="image" src="sources/image.png" alt="Image">
+    <img id="image" src="sources/image.png" alt="Image" class="hide"> <!-- Ensure only this one is present -->
     <div id="links-container">
         <a id="discord-link" href="https://discordapp.com/users/1199831622594338841" target="_blank"></a>
         <a id="youtube-link" href="https://randomleft.lol" target="_blank"></a>
     </div>
-    <audio id="audio" src="sources/sound1.mp3" loop></audio>
-    <audio id="audio2" src="sources/sound2.mp3" loop></audio>
+    <audio id="audio" src="sources/sound1.mp3" loop=""></audio>
+    <audio id="audio2" src="sources/sound2.mp3" loop=""></audio>
 
     <script>
         let titleIndex = 0;
@@ -225,7 +220,7 @@
             }
 
             setTimeout(function () {
-                textContent.innerHTML = '<a href="links.html" class="text">sillycat.cc</a>'; // Make text clickable
+                textContent.innerHTML = '<a href="index2.html" class="text">sillycat.cc</a>'; // Make text clickable
                 textContainer.classList.remove('hidden');
                 descriptionContent.classList.remove('hidden');
                 background.classList.remove('hidden');
@@ -274,13 +269,19 @@
                 } else {
                     isTypingActive = false; // Reset typing flag
                     index = 0; // Reset index for next typing
-                    setTimeout(startTypewriterEffect, 1000); // Restart effect
+                    setTimeout(startTypewriterEffect, 1000); // Restart effecta
                 }
             }
 
             type(); // Start typing
         }
+
+        window.onload = function() {
+            window.scrollTo(0, 0); // Scroll to top on load
+        };
     </script>
+
+
 
 </body>
 </html>
