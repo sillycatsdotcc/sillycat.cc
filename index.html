@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>blameinvis</title>
@@ -19,14 +20,14 @@
 
         body {
             margin: 0;
-            height: 100vh; /* Full viewport height */
+            height: 100vh;
             background-color: var(--background) !important;
             display: flex;
-            align-items: center; /* Center content vertically */
-            justify-content: center; /* Center content horizontally */
+            align-items: center;
+            justify-content: center;
             color: var(--text) !important;
             font-family: 'MagicNight', Arial, sans-serif;
-            overflow: hidden; /* Prevent scrolling */
+            overflow: hidden;
             position: relative;
         }
 
@@ -93,16 +94,16 @@
         }
 
         #image {
-            position: absolute; /* Set to absolute for positioning */
-            left: 50%; /* Center horizontally */
-            transform: translateX(-50%); /* Adjust for centering */
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             width: 115px;
-            opacity: 0; /* Start hidden */
+            opacity: 0;
             transition: opacity 1s;
         }
 
         #image.show {
-            opacity: 0; /* Show when the class is added */
+            opacity: 0;
         }
 
         #text-container.show {
@@ -155,11 +156,11 @@
 
         a {
             color: var(--text) !important;
-            text-decoration: none; /* No underline */
+            text-decoration: none;
         }
 
         a:hover {
-            text-decoration: underline; /* Underline on hover */
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -179,13 +180,13 @@
         </video>
     </div>
 
-    <img id="image" src="sources/image.png" alt="Image" class="hide"> <!-- Ensure only this one is present -->
+    <img id="image" src="sources/image.png" alt="Image" class="hide">
     <div id="links-container">
         <a id="discord-link" href="https://discordapp.com/users/1199831622594338841" target="_blank"></a>
         <a id="youtube-link" href="https://randomleft.lol" target="_blank"></a>
     </div>
-    <audio id="audio" src="sources/sound1.mp3" loop=""></audio>
-    <audio id="audio2" src="sources/sound2.mp3" loop=""></audio>
+    
+    <audio id="audio" loop=""></audio> <!-- Single audio element -->
 
     <script>
         let titleIndex = 0;
@@ -193,34 +194,36 @@
 
         function toggleTitle() {
             document.title = titles[titleIndex];
-            titleIndex = (titleIndex + 1) % titles.length; // Cycle through titles
+            titleIndex = (titleIndex + 1) % titles.length;
         }
 
-        setInterval(toggleTitle, 1000); // Change title every second
+        setInterval(toggleTitle, 1000);
 
         var descriptionContent = document.getElementById('description-content');
         var background = document.getElementById('background');
         var audio = document.getElementById('audio');
-        var audio2 = document.getElementById('audio2');
 
         descriptionContent.classList.add('hidden');
         background.classList.add('hidden');
 
         var textContainer = document.getElementById('text-container');
         var textContent = document.getElementById('text-content');
-        var isAudioPlaying = false; // Flag to track if audio is playing
-        var isTypingActive = false; // Flag to track if typing effect is active
+        var isAudioPlaying = false;
+        var isTypingActive = false;
 
         document.body.addEventListener('click', function () {
-            if (!isAudioPlaying) { // Check if audio is not already playing
-                audio.currentTime = 0; 
+            if (!isAudioPlaying) {
+                const audioFiles = ['sources/sound1.mp3', 'sources/othersound.mp3', 'sources/newsound.mp3', 'sources/stuck.mp3'];
+                const randomFile = audioFiles[Math.floor(Math.random() * audioFiles.length)];
+                audio.src = randomFile;
+                audio.currentTime = 0;
                 audio.play();
                 background.play();
-                isAudioPlaying = true; // Set flag to true
+                isAudioPlaying = true;
             }
 
             setTimeout(function () {
-                textContent.innerHTML = '<a href="index2.html" class="text">sillycat.cc</a>'; // Make text clickable
+                textContent.innerHTML = '<a href="index2.html" class="text">sillycat.cc</a>';
                 textContainer.classList.remove('hidden');
                 descriptionContent.classList.remove('hidden');
                 background.classList.remove('hidden');
@@ -232,8 +235,8 @@
                 document.getElementById('youtube-link').classList.add('show');
                 document.getElementById('image').classList.add('show');
 
-                if (!isTypingActive) { // Start typing effect only if it's not active
-                    startTypewriterEffect(); 
+                if (!isTypingActive) {
+                    startTypewriterEffect();
                 }
             }, 250);
         });
@@ -248,40 +251,37 @@
         let index = 0;
 
         function startTypewriterEffect() {
-            isTypingActive = true; // Set typing effect flag
-            descriptionContent.textContent = ''; // Clear previous text
+            isTypingActive = true;
+            descriptionContent.textContent = '';
 
             function type() {
                 if (index < descriptionText.length) {
                     descriptionContent.textContent += descriptionText.charAt(index);
                     index++;
-                    setTimeout(type, 100); // Typing speed
+                    setTimeout(type, 100);
                 } else {
-                    setTimeout(remove, 2000); // Wait before removing
+                    setTimeout(remove, 2000);
                 }
             }
 
             function remove() {
-                if (index > 1) { // Keep the hyphen and the character before it
+                if (index > 1) {
                     descriptionContent.textContent = descriptionContent.textContent.slice(0, -1);
                     index--;
-                    setTimeout(remove, 100); // Removing speed
+                    setTimeout(remove, 100);
                 } else {
-                    isTypingActive = false; // Reset typing flag
-                    index = 0; // Reset index for next typing
-                    setTimeout(startTypewriterEffect, 1000); // Restart effecta
+                    isTypingActive = false;
+                    index = 0;
+                    setTimeout(startTypewriterEffect, 1000);
                 }
             }
 
-            type(); // Start typing
+            type();
         }
 
         window.onload = function() {
-            window.scrollTo(0, 0); // Scroll to top on load
+            window.scrollTo(0, 0);
         };
     </script>
-
-
-
 </body>
 </html>
