@@ -211,16 +211,35 @@
         var isAudioPlaying = false;
         var isTypingActive = false;
 
-        document.body.addEventListener('click', function () {
-            if (!isAudioPlaying) {
-                const audioFiles = ['sources/infinite.mp3', 'sources/infinite.mp3', 'sources/infinite.mp3', 'sources/infinite.mp3'];
-                const randomFile = audioFiles[Math.floor(Math.random() * audioFiles.length)];
-                audio.src = randomFile;
-                audio.currentTime = 0;
-                audio.play();
-                background.play();
-                isAudioPlaying = true;
-            }
+document.body.addEventListener('click', function () {
+    if (!isAudioPlaying) {
+        // Set the audio source directly
+        audio.src = 'sources/infinite.mp3'; // Your audio file
+        audio.currentTime = 0; // Start from the beginning
+        audio.play(); // Play the audio
+        background.play(); // Play the background video
+        isAudioPlaying = true;
+    }
+
+    setTimeout(function () {
+        textContent.innerHTML = '<a href="index2.html" class="text">sillycat.cc</a>';
+        textContainer.classList.remove('hidden');
+        descriptionContent.classList.remove('hidden');
+        background.classList.remove('hidden');
+        document.getElementById('pfp').classList.remove('hidden');
+        textContainer.classList.add('show');
+        background.classList.add('show');
+        document.getElementById('pfp').classList.add('show');
+        document.getElementById('discord-link').classList.add('show');
+        document.getElementById('youtube-link').classList.add('show');
+        document.getElementById('image').classList.add('show');
+
+        if (!isTypingActive) {
+            startTypewriterEffect();
+        }
+    }, 250);
+});
+
 
             setTimeout(function () {
                 textContent.innerHTML = '<a href="index2.html" class="text">sillycat.cc</a>';
