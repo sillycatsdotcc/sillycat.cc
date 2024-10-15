@@ -1,306 +1,196 @@
 <!DOCTYPE html>
+<!-- made by albert <: -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>blameinvis</title>
-    <link rel="icon" href="sources/wowow.png" type="image/png">
+    <title>0.o</title>
+    <link rel="icon" type="image/png" href="sources/wowow.png"> <!-- Add this line for the favicon -->
     <style>
-        :root {
-            --background: black;
-            --text: white;
-        }
-
         @font-face {
-            font-family: 'MagicNight';
-            src: url('fonts/gg sans Medium.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
+            font-family: 'GG Sans';
+            src: url('fonts/GG Sans Medium.ttf') format('truetype');
         }
 
         body {
-            margin: 0;
-            height: 100vh;
-            background-color: var(--background) !important;
+            background-color: black;
             display: flex;
-            align-items: center;
             justify-content: center;
-            color: var(--text) !important;
-            font-family: 'MagicNight', Arial, sans-serif;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'GG Sans', sans-serif;
             overflow: hidden;
             position: relative;
         }
 
-        .text {
-            font-size: 29px;
-            opacity: 1;
-            transition: opacity 0.52s;
+        #continueText {
+            color: white;
+            font-size: 24px;
             cursor: pointer;
-            text-shadow: 0 0 15px rgba(25, 25, 25, 1), 0 0 30px rgba(25, 25, 25, 0.4);
-            display: block;
-            margin: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+            position: fixed; /* Make it fixed to keep it in the same place */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust to center */
         }
 
-        #pfp.hidden,
-        #description-content.hidden,
-        #wallpaper.hidden {
+        .box {
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            position: fixed;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .box img {
+            width: 50px;
+            height: auto;
+            margin-right: 5px;
+            border-radius: 50%;
+        }
+
+        .text-container {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        .box span {
+            color: white;
+            font-size: 24px;
+            margin-right: 5px;
+        }
+
+        .mute-button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #oceanGif {
             display: none;
             opacity: 0;
+            transition: opacity 0.5s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
         }
 
-        #pfp.show {
-            height: 50px;
-            display: block;
-            border-radius: 1%;
-        }
-
-        .hidden {
-            opacity: 0;
-        }
-
-        #links-container {
+        .socials {
             position: absolute;
             bottom: 50px;
-            text-align: center;
-        }
-
-        #discord-link,
-        #youtube-link {
-            font-size: 18px;
-            opacity: 0;
-            transition: opacity 0.5s, filter 0.3s;
-            text-decoration: none;
-            font-family: 'MagicNight', Arial, sans-serif;
-            display: block;
-            text-shadow: 
-                1px 1px 0px black,  
-                -1px -1px 0px black,
-                1px -1px 0px black,
-                -1px 1px 0px black;  
-        }
-
-        #discord-link {
-            margin-bottom: 5px;
-        }
-
-        #discord-link:hover,
-        #youtube-link:hover {
-            filter: blur(2px);
-        }
-
-        #discord-link.show,
-        #youtube-link.show {
-            opacity: 1;
-        }
-
-        #image {
-            position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            width: 115px;
+            display: none;
             opacity: 0;
-            transition: opacity 1s;
+            transition: opacity 0.5s ease;
+            gap: 20px;
         }
 
-        #image.show {
-            opacity: 0;
-        }
-
-        #text-container.show {
-            transition: opacity 1s;
-            background: rgba(24, 24, 24, 0.25) !important;
-            padding: 25px;
-            border-radius: 1px;
-            border: 1px solid #1a1a1a28;
-            align-items: center;
-            position: relative;
-        }
-
-        #card {
-            transition: opacity 1s;
-            align-items: center;
-            display: flex;
-            column-gap: 20px;
-            justify-content: space-between;
-        }
-
-        .description {
-            padding-top: 10px;
-            margin: 0;
-        }
-
-        .wallholder {
-            overflow: hidden;
-            position: fixed;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            z-index: -10;
-        }
-
-        .wallpaper {
-            opacity: 0;
-            transition: opacity 0.5s, filter 0.3s;
-            position: fixed;
-            left: 0%;
-            top: 0%;
-            object-fit: cover;
-            width: 100%;
-            height: 100%;
-            z-index: -9;
-        }
-
-        #background.show {
-            opacity: 1;
-        }
-
-        a {
-            color: var(--text) !important;
+        .social-button {
+            background-color: transparent;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
             text-decoration: none;
+            font-family: 'GG Sans', sans-serif;
+            transition: opacity 0.3s ease;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .social-button:hover {
+            opacity: 0.7;
+        }
+
+        .copyright {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: white;
+            font-size: 14px;
+            opacity: 0.4;
+            transition: opacity 0.5s ease;
+            font-family: Arial, sans-serif;
         }
     </style>
 </head>
-
 <body>
-    <div id="text-container">
-        <div id="card">
-            <img id="pfp" class="hidden" src="./sources/image.png" alt="Profile Picture">
-            <h1 id="text-content" class="text">click anywhere</h1>
+    <div id="continueText">Continue?</div>
+    <img id="oceanGif" src="sources/ocean.gif" alt="Ocean GIF">
+    <div class="box" id="infoBox">
+        <img src="sources/image.png" alt="Image">
+        <div class="text-container">
+            <span>sillycat.cc</span>
+            <button class="mute-button" id="muteButton">🔊</button>
         </div>
-        <p id="description-content" class="description hidden"></p>
     </div>
 
-    <div id="wallholder" class="wallholder">
-        <video id="background" class="wallpaper hidden" playsinline="" preload="" muted="" loop="">
-            <source src="./sources/ocean.mp4" type="video/mp4">
-        </video>
+    <audio id="audio" src="sources/infinite.mp3" loop></audio>
+
+    <div class="socials" id="socialButtons">
+        <button class="social-button" onclick="window.open('https://twitter.com', '_blank')">Twitter</button>
+        <button class="social-button" onclick="window.open('https://instagram.com', '_blank')">Instagram</button>
     </div>
 
-    <img id="image" src="sources/image.png" alt="Image" class="hide">
-    <div id="links-container">
-        <a id="discord-link" href="https://discordapp.com/users/1199831622594338841" target="_blank"></a>
-        <a id="youtube-link" href="https://randomleft.lol" target="_blank"></a>
+    <div class="copyright" id="copyright">
+        © 2024 sillycat.cc. All rights reserved.
     </div>
-    
-    <audio id="audio" loop=""></audio> <!-- Single audio element -->
 
     <script>
-        let titleIndex = 0;
-        const titles = ['discord:', 'blameinvis'];
+        const continueText = document.getElementById('continueText');
+        const infoBox = document.getElementById('infoBox');
+        const oceanGif = document.getElementById('oceanGif');
+        const audio = document.getElementById('audio');
+        const muteButton = document.getElementById('muteButton');
+        const socialButtons = document.getElementById('socialButtons');
+        const copyright = document.getElementById('copyright');
 
-        function toggleTitle() {
-            document.title = titles[titleIndex];
-            titleIndex = (titleIndex + 1) % titles.length;
-        }
+        audio.volume = 0.2;
 
-        setInterval(toggleTitle, 1000);
+        document.body.addEventListener('click', () => {
+            continueText.style.opacity = '0';
+            oceanGif.style.display = 'block';
+            infoBox.style.display = 'flex';
+            socialButtons.style.display = 'flex';
+            copyright.style.display = 'block';
 
-        var descriptionContent = document.getElementById('description-content');
-        var background = document.getElementById('background');
-        var audio = document.getElementById('audio');
+            setTimeout(() => {
+                oceanGif.style.opacity = '1';
+                infoBox.style.opacity = '1';
+                socialButtons.style.opacity = '1';
+                copyright.style.opacity = '0.4';
+            }, 20);
 
-        descriptionContent.classList.add('hidden');
-        background.classList.add('hidden');
+            setTimeout(() => {
+                continueText.style.display = 'none';
+            }, 500);
 
-        var textContainer = document.getElementById('text-container');
-        var textContent = document.getElementById('text-content');
-        var isAudioPlaying = false;
-        var isTypingActive = false;
-
-document.body.addEventListener('click', function () {
-    if (!isAudioPlaying) {
-        // Set the audio source directly
-        audio.src = 'sources/infinite.mp3'; // Your audio file
-        audio.currentTime = 0; // Start from the beginning
-        audio.play(); // Play the audio
-        background.play(); // Play the background video
-        isAudioPlaying = true;
-    }
-
-    setTimeout(function () {
-        textContent.innerHTML = '<a href="index2.html" class="text">sillycat.cc</a>';
-        textContainer.classList.remove('hidden');
-        descriptionContent.classList.remove('hidden');
-        background.classList.remove('hidden');
-        document.getElementById('pfp').classList.remove('hidden');
-        textContainer.classList.add('show');
-        background.classList.add('show');
-        document.getElementById('pfp').classList.add('show');
-        document.getElementById('discord-link').classList.add('show');
-        document.getElementById('youtube-link').classList.add('show');
-        document.getElementById('image').classList.add('show');
-
-        if (!isTypingActive) {
-            startTypewriterEffect();
-        }
-    }, 250);
-});
-
-
-            setTimeout(function () {
-                textContent.innerHTML = '<a href="index2.html" class="text">sillycat.cc</a>';
-                textContainer.classList.remove('hidden');
-                descriptionContent.classList.remove('hidden');
-                background.classList.remove('hidden');
-                document.getElementById('pfp').classList.remove('hidden');
-                textContainer.classList.add('show');
-                background.classList.add('show');
-                document.getElementById('pfp').classList.add('show');
-                document.getElementById('discord-link').classList.add('show');
-                document.getElementById('youtube-link').classList.add('show');
-                document.getElementById('image').classList.add('show');
-
-                if (!isTypingActive) {
-                    startTypewriterEffect();
-                }
-            }, 250);
+            audio.play();
         });
 
-        background.addEventListener('ended', function() {
-            audio.pause();
-            audio.currentTime = 0; 
+        let isMuted = false;
+
+        muteButton.addEventListener('click', () => {
+            isMuted = !isMuted;
+            audio.muted = isMuted;
+            muteButton.textContent = isMuted ? '🔇' : '🔊';
         });
-
-        // Typewriter effect for the description
-        const descriptionText = '- made by albert ??';
-        let index = 0;
-
-        function startTypewriterEffect() {
-            isTypingActive = true;
-            descriptionContent.textContent = '';
-
-            function type() {
-                if (index < descriptionText.length) {
-                    descriptionContent.textContent += descriptionText.charAt(index);
-                    index++;
-                    setTimeout(type, 100);
-                } else {
-                    setTimeout(remove, 2000);
-                }
-            }
-
-            function remove() {
-                if (index > 1) {
-                    descriptionContent.textContent = descriptionContent.textContent.slice(0, -1);
-                    index--;
-                    setTimeout(remove, 100);
-                } else {
-                    isTypingActive = false;
-                    index = 0;
-                    setTimeout(startTypewriterEffect, 1000);
-                }
-            }
-
-            type();
-        }
-
-        window.onload = function() {
-            window.scrollTo(0, 0);
-        };
     </script>
 </body>
 </html>
