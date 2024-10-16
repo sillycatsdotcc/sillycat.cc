@@ -7,13 +7,12 @@
     <title>0.o</title>
     <link rel="icon" type="image/png" href="sources/wowow.png"> <!-- Add this line for the favicon -->
     <style>
-@font-face {
-    font-family: 'GG Sans';
-    src: url('fonts/gg sans Medium.ttf') format('truetype'),
-         url('fonts/gg sans Medium.woff') format('woff'),
-         url('fonts/gg sans Medium.woff2') format('woff2');
-}
-
+        @font-face {
+            font-family: 'GG Sans';
+            src: url('fonts/gg sans Medium.ttf') format('truetype'),
+                 url('fonts/gg sans Medium.woff') format('woff'),
+                 url('fonts/gg sans Medium.woff2') format('woff2');
+        }
 
         body {
             background-color: black;
@@ -33,10 +32,10 @@
             cursor: pointer;
             transition: opacity 0.5s ease;
             z-index: 1;
-            position: fixed; /* Make it fixed to keep it in the same place */
-            top: 50%; /* Center vertically */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50%); /* Adjust to center */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .box {
@@ -131,6 +130,45 @@
             transition: opacity 0.5s ease;
             font-family: Arial, sans-serif;
         }
+
+        /* New styles for the Paint Project button */
+        #paintProjectButton {
+            display: none;
+            color: white;
+            font-size: 16px; /* Font size to match text */
+            cursor: pointer;
+            position: absolute;
+            bottom: 30px; /* Position above copyright */
+            right: 50px; /* Move left to make space for brush.png */
+            background: none;
+            border: none;
+            opacity: 0.55; /* Default opacity */
+            transition: opacity 0.3s ease, transform 0.3s ease; /* Transition for size and opacity */
+            text-decoration: underline; /* Add underline */
+            padding: 0; /* No padding for button */
+        }
+
+        #paintProjectButton:hover {
+            opacity: 0.8; /* Full opacity on hover */
+            transform: scale(1.1); /* Slightly increase size on hover */
+        }
+
+        /* Style for brush image */
+        #brushImage {
+            display: none; /* Initially hidden */
+            position: absolute;
+            bottom: 30px; /* Align with button */
+            right: 145px; /* Position next to the button */
+            width: 30px; /* Set width for the image */
+            height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s ease; /* Transition for size */
+            opacity: 0.5; /* Set opacity to 0.5 */
+            filter: invert(1); /* Invert colors */
+        }
+
+        #paintProjectButton:hover + #brushImage {
+            transform: scale(1.1); /* Increase size of brush image on hover */
+        }
     </style>
 </head>
 <body>
@@ -151,6 +189,9 @@
         <button class="social-button" onclick="window.open('https://discordapp.com/users/1199831622594338841', '_blank')">Discord</button>
     </div>
 
+    <button id="paintProjectButton" onclick="location.href='l.html'">Paint Project</button> <!-- New button -->
+    <img id="brushImage" src="sources/brush.png" alt="Brush Image"> <!-- Brush image -->
+
     <div class="copyright" id="copyright">
         © 2024 sillycat.cc. All rights reserved.
     </div>
@@ -163,6 +204,8 @@
         const muteButton = document.getElementById('muteButton');
         const socialButtons = document.getElementById('socialButtons');
         const copyright = document.getElementById('copyright');
+        const paintProjectButton = document.getElementById('paintProjectButton');
+        const brushImage = document.getElementById('brushImage');
 
         audio.volume = 0.2;
 
@@ -172,12 +215,15 @@
             infoBox.style.display = 'flex';
             socialButtons.style.display = 'flex';
             copyright.style.display = 'block';
+            paintProjectButton.style.display = 'block'; // Show the Paint Project button
+            brushImage.style.display = 'block'; // Show the brush image
 
             setTimeout(() => {
                 oceanGif.style.opacity = '1';
                 infoBox.style.opacity = '1';
                 socialButtons.style.opacity = '1';
                 copyright.style.opacity = '0.4';
+                paintProjectButton.style.opacity = '0.5'; // Set initial opacity
             }, 20);
 
             setTimeout(() => {
