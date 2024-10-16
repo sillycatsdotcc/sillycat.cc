@@ -4,68 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Paint App</title>
+    <link rel="icon" href="sources/wowow.png" type="image/png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #000;
-            font-family: 'Poppins', sans-serif;
-            opacity: 0;
-            transition: opacity 1s ease;
-            overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; background-color: #000; font-family: 'Poppins', sans-serif;
+            opacity: 0; transition: opacity 1s ease; overflow: hidden;
         }
-
-        canvas {
-            border: none;
-            width: 100vw;
-            height: 100vh;
-            touch-action: none;
-            background-color: #000;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .controls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 10;
-            color: white;
-        }
-
-        .go-back {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 10;
-            background-color: #ffffff;
-            color: rgb(0, 0, 0);
-            border: none;
-            border-radius: 5px;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .go-back:hover {
-            background-color: #ffffff;
-            color: #000000
-        }
+        canvas { border: none; width: 100vw; height: 100vh; touch-action: none; background-color: #000; position: absolute; top: 0; left: 0; }
+        .controls { position: absolute; top: 10px; left: 10px; z-index: 10; color: white; }
+        .go-back { position: absolute; top: 10px; right: 10px; z-index: 10; background-color: #fff; color: #000; border: none; border-radius: 5px; padding: 10px 15px; cursor: pointer; font-size: 16px; }
+        .go-back:hover { background-color: #fff; color: #000; }
     </style>
 </head>
 <body>
-
 <div class="controls">
     <label for="penColor">Pen Color:</label>
     <input type="color" id="penColor" value="#ffffff">
@@ -82,10 +36,7 @@
     const bgColorInput = document.getElementById('bgColor');
     const goBackButton = document.getElementById('goBackButton');
     
-    let drawing = false;
-    let paths = [];
-    let undonePaths = [];
-    let lastX, lastY;
+    let drawing = false, paths = [], undonePaths = [], lastX, lastY;
 
     function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -96,107 +47,45 @@
     }
 
     function startDrawing(e) {
-        drawing = true;
-        lastX = e.clientX;
-        lastY = e.clientY;
+        drawing = true; lastX = e.clientX; lastY = e.clientY;
         const path = { color: penColorInput.value, points: [{ x: lastX, y: lastY }] };
-        paths.push(path);
-        undonePaths = []; // Clear the redo stack
-        ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
+        paths.push(path); undonePaths = [];
+        ctx.beginPath(); ctx.moveTo(lastX, lastY);
     }
 
     function draw(e) {
         if (!drawing) return;
-
         const currentPath = paths[paths.length - 1];
-        ctx.strokeStyle = currentPath.color;
-        ctx.lineWidth = 5;
-        ctx.lineCap = 'round'; // Rounded line endings
-
-        // Smooth drawing
+        ctx.strokeStyle = currentPath.color; ctx.lineWidth = 5; ctx.lineCap = 'round';
         ctx.quadraticCurveTo(lastX, lastY, (lastX + e.clientX) / 2, (lastY + e.clientY) / 2);
-        ctx.stroke();
-        currentPath.points.push({ x: e.clientX, y: e.clientY });
-
-        lastX = e.clientX;
-        lastY = e.clientY;
+        ctx.stroke(); currentPath.points.push({ x: e.clientX, y: e.clientY });
+        lastX = e.clientX; lastY = e.clientY;
     }
 
-    function stopDrawing() {
-        drawing = false;
-        ctx.closePath();
-    }
+    function stopDrawing() { drawing = false; ctx.closePath(); }
 
     function redraw() {
-        ctx.fillStyle = bgColorInput.value;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = bgColorInput.value; ctx.fillRect(0, 0, canvas.width, canvas.height);
         paths.forEach(path => {
             ctx.strokeStyle = path.color;
-            ctx.beginPath();
-            ctx.moveTo(path.points[0].x, path.points[0].y);
-            path.points.forEach((point, index) => {
-                if (index === 0) return; // Skip first point
-                ctx.lineTo(point.x, point.y);
-            });
+            ctx.beginPath(); ctx.moveTo(path.points[0].x, path.points[0].y);
+            path.points.forEach((point, index) => { if (index !== 0) ctx.lineTo(point.x, point.y); });
             ctx.stroke();
         });
     }
 
-    function smoothRedraw() {
-        ctx.globalAlpha = 0.5; // Set to half transparent
-        redraw();
-        setTimeout(() => {
-            ctx.globalAlpha = 1; // Reset alpha
-            redraw();
-        }, 100); // Delay before resetting opacity
-    }
+    function undo() { if (paths.length) { undonePaths.push(paths.pop()); redraw(); } }
 
-    function undo() {
-        if (paths.length > 0) {
-            undonePaths.push(paths.pop());
-            smoothRedraw(); // Use smooth redraw for undo
-        }
-    }
+    function redo() { if (undonePaths.length) { paths.push(undonePaths.pop()); redraw(); } }
 
-    function redo() {
-        if (undonePaths.length > 0) {
-            paths.push(undonePaths.pop());
-            smoothRedraw(); // Use smooth redraw for redo
-        }
-    }
-
-    // Fade in the body
-    window.onload = function() {
-        document.body.style.opacity = 1;
-        resizeCanvas();
-    };
-
+    window.onload = function() { document.body.style.opacity = 1; resizeCanvas(); };
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
-
-    bgColorInput.addEventListener('input', () => {
-        ctx.fillStyle = bgColorInput.value;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        redraw();
-    });
-
-    goBackButton.addEventListener('click', () => {
-        window.location.href = 'index.html'; // Redirect to index.html
-    });
-
+    bgColorInput.addEventListener('input', () => { ctx.fillStyle = bgColorInput.value; ctx.fillRect(0, 0, canvas.width, canvas.height); redraw(); });
+    goBackButton.addEventListener('click', () => { window.location.href = 'index.html'; });
     window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.key === 'z') {
-            e.preventDefault(); // Prevent default undo action
-            undo();
-        } else if (e.ctrlKey && e.key === 'y') {
-            e.preventDefault(); // Prevent default redo action
-            redo();
-        }
-    });
+    window.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'z') { e.preventDefault(); undo(); } else if (e.ctrlKey && e.key === 'y') { e.preventDefault(); redo(); } });
 </script>
-
 </body>
 </html>
