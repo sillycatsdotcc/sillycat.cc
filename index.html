@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- made by albert <: -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>0.o</title>
-    <link rel="icon" type="image/png" href="sources/wowow.png"> <!-- Add this line for the favicon -->
+    <link rel="icon" type="image/png" href="sources/wowow.png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
     <style>
         @font-face {
             font-family: 'GG Sans';
@@ -54,11 +54,29 @@
             transform: translate(-50%, -50%);
         }
 
+        .play-button {
+            position: absolute; /* Keep as absolute */
+            bottom: 30px; /* Place it above copyright */
+            right: 10px; /* Align it to the right */
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.5s ease;
+            z-index: 3;
+            font-family: 'Roboto', sans-serif; /* Use Roboto font */
+        }
+
         .box img {
             width: 50px;
             height: auto;
             margin-right: 5px;
             border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .box img:hover {
+            transform: translateY(-5px);
         }
 
         .text-container {
@@ -71,6 +89,11 @@
             color: white;
             font-size: 24px;
             margin-right: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .box span:hover {
+            transform: translateY(-5px);
         }
 
         .mute-button {
@@ -79,6 +102,11 @@
             color: white;
             font-size: 24px;
             cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .mute-button:hover {
+            transform: translateY(-5px);
         }
 
         #oceanGif {
@@ -99,10 +127,13 @@
             bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             display: none;
             opacity: 0;
             transition: opacity 0.5s ease;
-            gap: 20px;
+            gap: 10px;
         }
 
         .social-button {
@@ -131,43 +162,34 @@
             font-family: Arial, sans-serif;
         }
 
-        /* New styles for the Paint Project button */
-        #paintProjectButton {
+        #bio {
             display: none;
             color: white;
-            font-size: 16px; /* Font size to match text */
-            cursor: pointer;
-            position: absolute;
-            bottom: 30px; /* Position above copyright */
-            right: 50px; /* Move left to make space for brush.png */
-            background: none;
-            border: none;
-            opacity: 0.55; /* Default opacity */
-            transition: opacity 0.3s ease, transform 0.3s ease; /* Transition for size and opacity */
-            text-decoration: underline; /* Add underline */
-            padding: 0; /* No padding for button */
+            font-size: 20px;
+            font-family: 'Roboto', sans-serif;
+            position: fixed;
+            top: 58%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.3s ease;
+            text-align: center; /* Center text within bio */
         }
 
-        #paintProjectButton:hover {
-            opacity: 0.8; /* Full opacity on hover */
-            transform: scale(1.1); /* Slightly increase size on hover */
+        #bio:hover {
+            transform: translate(-50%, -60%);
         }
 
-        /* Style for brush image */
-        #brushImage {
-            display: none; /* Initially hidden */
-            position: absolute;
-            bottom: 30px; /* Align with button */
-            right: 145px; /* Position next to the button */
-            width: 30px; /* Set width for the image */
-            height: auto; /* Maintain aspect ratio */
-            transition: transform 0.3s ease; /* Transition for size */
-            opacity: 0.5; /* Set opacity to 0.5 */
-            filter: invert(1); /* Invert colors */
+        #oceanText {
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.3s ease; /* Smooth transition for opacity */
+            font-size: 16px; /* Adjust font size if needed */
+            margin-top: 3px; /* Vertical spacing */
+            margin-left: -216px; /* Adjustable horizontal spacing */
         }
 
-        #paintProjectButton:hover + #brushImage {
-            transform: scale(1.1); /* Increase size of brush image on hover */
+        #bio:hover #oceanText {
+            opacity: 0.5; /* Visible on hover */
         }
     </style>
 </head>
@@ -185,16 +207,22 @@
     <audio id="audio" src="sources/infinite.mp3" loop></audio>
 
     <div class="socials" id="socialButtons">
-        <button class="social-button" onclick="window.open('https://x.com/blameAlbert', '_blank')">Twitter</button>
-        <button class="social-button" onclick="window.open('https://discordapp.com/users/1199831622594338841', '_blank')">Discord</button>
+        <button class="social-button" title="> Twitter" onclick="window.open('https://x.com/blameAlbert', '_blank')">Twitter</button>
+        <button class="social-button" title="> Discord" onclick="window.open('https://discordapp.com/users/1199831622594338841', '_blank')">Discord</button>
     </div>
-
-    <button id="paintProjectButton" onclick="location.href='l.html'">Paint Project</button> <!-- New button -->
-    <img id="brushImage" src="sources/brush.png" alt="Brush Image"> <!-- Brush image -->
 
     <div class="copyright" id="copyright">
         © 2024 sillycat.cc. All rights reserved.
     </div>
+
+    <!-- Bio Section -->
+    <div id="bio">
+        hi im albert video editor and front end dev
+        <div id="oceanText"> (aka ocean) </div>
+    </div>
+
+    <!-- New Play Tetris Button -->
+    <a href="tetris.html" class="play-button" id="playTetrisButton">Play Tetris</a>
 
     <script>
         const continueText = document.getElementById('continueText');
@@ -204,8 +232,8 @@
         const muteButton = document.getElementById('muteButton');
         const socialButtons = document.getElementById('socialButtons');
         const copyright = document.getElementById('copyright');
-        const paintProjectButton = document.getElementById('paintProjectButton');
-        const brushImage = document.getElementById('brushImage');
+        const bio = document.getElementById('bio');
+        const playTetrisButton = document.getElementById('playTetrisButton');
 
         audio.volume = 0.2;
 
@@ -215,15 +243,16 @@
             infoBox.style.display = 'flex';
             socialButtons.style.display = 'flex';
             copyright.style.display = 'block';
-            paintProjectButton.style.display = 'block'; // Show the Paint Project button
-            brushImage.style.display = 'block'; // Show the brush image
+            bio.style.display = 'block';
+            playTetrisButton.style.opacity = '1'; // Show the play button
 
             setTimeout(() => {
                 oceanGif.style.opacity = '1';
                 infoBox.style.opacity = '1';
                 socialButtons.style.opacity = '1';
                 copyright.style.opacity = '0.4';
-                paintProjectButton.style.opacity = '0.5'; // Set initial opacity
+                bio.style.opacity = '1';  // Show the bio
+                playTetrisButton.style.opacity = '0.3'; // Make it visible
             }, 20);
 
             setTimeout(() => {
