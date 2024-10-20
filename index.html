@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@</title>
+    <link rel="icon" href="sources/wowow.png" type="image/png"> 
+    <style>
+        :root {
+            --background: black;
+            --text: white;
+        }
+
+        @font-face {
+            font-family: 'MagicNight';
+            src: url('fonts/gg sans Medium.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: var(--background) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text) !important;
+            font-family: 'MagicNight', Arial, sans-serif;
+            overflow: hidden;
+            user-select: none; /* Prevent text selection */
+        }
+
+        #text-container, #links-container {
+            pointer-events: auto; /* Allow interaction with these elements */
+        }
+
+        * {
+            user-select: none; /* Prevent text selection */
+            cursor: default; /* No cursor change on hover */
+        }
+
+        .text {
+            font-size: 29px;
+            opacity: 1;
+            transition: opacity 0.52s;
+            cursor: default; /* No cursor change */
+            text-shadow: 0 0 15px rgba(25, 25, 25, 0.4), 0 0 30px rgba(25, 25, 25, 0.4);
+            display: block;
+            height: 100%;
+            margin: 0%;
+        }
+
+        #pfp {
+            transition: transform 0.3s; /* Smooth transition for movement */
+        }
+
+        #pfp:hover {
+            transform: translateY(-3px); /* Move up by 10 pixels on hover */
+        }
+
+        #pfp.hidden, #description-content.hidden, #wallpaper.hidden {
+            display: none;
+            opacity: 0;
+        }
+
+        #pfp.show {
+            height: 50px;
+            display: block;
+            border-radius: 100%;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+
+        #links-container {
+            position: absolute;
+            bottom: 50px;
+            text-align: center;
+        }
+
+        #discord-link,
+        #youtube-link {
+            font-size: 18px;
+            opacity: 0;
+            transition: opacity 0.5s, filter 0.3s;
+            text-decoration: none;
+            font-family: 'MagicNight', Arial, sans-serif;
+            display: block;
+        }
+
+        #discord-link {
+            margin-bottom: 5px;
+        }
+
+        #discord-link:hover,
+        #youtube-link:hover {
+            filter: blur(2px);
+        }
+
+        #discord-link.show,
+        #youtube-link.show {
+            opacity: 1;
+        }
+
+        #text-container.show {
+            transition: opacity 1s;
+            background: rgba(0, 0, 0, 0.25) !important;
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid #1a1a1a28;
+            align-items: center;
+        }
+
+        #card {
+            transition: opacity 1s;
+            align-items: center;
+            display: flex;
+            column-gap: 20px;
+            justify-content: space-between;
+        }
+
+        .description {
+            padding-top: 10px;
+            margin: 0%;
+        }
+
+        .wallholder {
+            overflow: hidden;
+            position: fixed;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+        }
+
+        .wallpaper {
+            opacity: 0;
+            transition: opacity 0.5s, filter 0.3s;
+            position: fixed;
+            left: 0%;
+            top: 0%;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            z-index: -9;
+        }
+
+        #background.show {
+            opacity: 1;
+        }
+
+        a {
+            color: var(--text) !important;
+        }
+
+        /* New styles for bottom left text */
+        #bottom-left-text {
+            position: fixed;
+            bottom: 13px;
+            left: 20px;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        #bottom-left-text.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="text-container">
+        <div id="card">
+            <img id="pfp" class="hidden" src="./sources/image.png"></img>
+            <h1 id="text-content" class="text">Continue?</h1>
+        </div>
+        <p id="description-content" class="description"> - discord; oceanbarr</p>
+    </div>
+
+    <div id="wallholder" class="wallholder">
+        <video id="background" class="wallpaper" playsinline preload muted loop>
+            <source src="./sources/ocean.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div id="links-container">
+        <a id="discord-link" href="https://discordapp.com/users/1199831622594338841" target="_blank">Discord</a>
+        <a id="youtube-link" href="https://www.youtube.com/@%F0%A1%AF%92" target="_blank">YouTube</a>
+    </div>
+
+    <!-- New bottom left text as a link -->
+    <a id="bottom-left-text" href="z.html">gotoz.html</a>
+
+    <audio id="audio" src="sources/Quasimoto- MHB (DJ Red Spinach Instrumental Mix).mp3"></audio>
+    <script>
+        var titleState = false;
+        
+        function toggleTitle() {
+            document.title = titleState ? '@' : '@@';
+            titleState = !titleState;
+        }
+        
+        setInterval(toggleTitle, 1000);
+
+        var descriptionContent = document.getElementById('description-content');
+        var background = document.getElementById('background');
+        var bottomLeftText = document.getElementById('bottom-left-text');
+        
+        descriptionContent.classList.add('hidden');
+        background.classList.add('hidden');
+        bottomLeftText.classList.remove('show');
+
+        document.getElementById('text-container').addEventListener('click', function () {
+            var textContainer = document.getElementById('text-container');
+            var textContent = document.getElementById('text-content');
+            var pfp = document.getElementById('pfp');
+            var discordLink = document.getElementById('discord-link');
+            var youtubeLink = document.getElementById('youtube-link');
+            var audio = document.getElementById('audio');
+            document.getElementById('background').setAttribute("autoplay", "autoplay");
+
+            audio.play();
+            setTimeout(function () {
+                background.play();
+                textContent.textContent = 'sillycat.cc/bio';
+                textContainer.classList.remove('hidden');
+                descriptionContent.classList.remove('hidden');
+                background.classList.remove('hidden');
+                pfp.classList.remove('hidden');
+                textContainer.classList.add('show');
+                background.classList.add('show');
+                pfp.classList.add('show');
+                discordLink.classList.add('show');
+                youtubeLink.classList.add('show');
+
+                // Show the bottom left text
+                bottomLeftText.classList.add('show');
+            }, 250);
+        });
+    </script>
+</body>
+
+</html>
